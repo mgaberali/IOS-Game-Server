@@ -20,34 +20,41 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author AYA
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
-public class RegisterServlet extends HttpServlet {
+@WebServlet(name = "SignupServlet", urlPatterns = {"/SignupServlet"})
+public class SignupServlet extends HttpServlet {
 
     static final UserDAO user = UserDAO.getInstance();
     User userObj = new User();
+    PrintWriter out;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //ssuper.doGet(req, resp); //To change body of generated methods, choose Tools | Templates.
+        out = response.getWriter();
+        out.println("ddd");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("###############################################################");
-
+        out = response.getWriter();
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
-        String image = request.getParameter("imageName");
-        String score = request.getParameter("score");
+        //String image = request.getParameter("imageName");
+        //String score = request.getParameter("score");
 
         userObj.setName(name);
         userObj.setPassword(password);
         userObj.setEmail(email);
-        userObj.setImageName(image);
-        userObj.setScore(Integer.parseInt(score));
-
+        // userObj.setImageName(image);
+        //userObj.setScore(Integer.parseInt(score));
 
         try {
             user.addUser(userObj);
-            PrintWriter out = response.getWriter();
-            out.println("ddd");
+           // out.write("yes");
+            out.println("done done done");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
