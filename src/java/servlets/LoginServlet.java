@@ -1,6 +1,5 @@
 package servlets;
 
-import Beans.User;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;

@@ -4,10 +4,10 @@ import Beans.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UserDAO {
+    
+    private static final String LIMIT = "10";
 
     private static final String USER = "user";
     private static final String NAME = "name";
@@ -109,8 +109,10 @@ public class UserDAO {
 
         String[] columns = {EMAIL, NAME, PASSWORD, IMAGENAME, SCORE};
 
+        String[] orderby = {SCORE};
+        
         //String condition ="";
-        ResultSet resultSet = databaseUtilities.select(USER, columns);
+        ResultSet resultSet = databaseUtilities.select(USER, columns, null, orderby, false, LIMIT);
 
         User user = null;
         ArrayList<User> allUsers = new ArrayList<User>();
@@ -118,7 +120,7 @@ public class UserDAO {
             user = new User();
             user.setEmail(resultSet.getString(1));
             user.setName(resultSet.getString(2));
-            user.setPassword(resultSet.getString(3));
+           // user.setPassword(resultSet.getString(3));
             user.setImageName(resultSet.getString(4));
             user.setScore(resultSet.getInt(5));
             allUsers.add(user);
@@ -127,41 +129,4 @@ public class UserDAO {
         return allUsers;
     }
 
-    /////////////
-    /*for test ayaaaaaaaaa*/
-//    public static void main(String[] args) {
-//
-//        try {
-//            User x = new User();
-//            User y = new User();
-//            UserDAO dao = new UserDAO();
-//            x.setEmail("amal mail");
-//            x.setName("amal");
-//            x.setImageName("vffsb");
-//            x.setPassword("1245");
-//            x.setScore(8);
-//
-//            y.setEmail("aya");
-//            y.setName("aya");
-//            y.setImageName("ay");
-//            y.setPassword("1245");
-//            y.setScore(8);
-//
-//            // dao.addUser(x);
-//            //dao.addUser(y);
-//            //System.out.println("added");
-//            ArrayList<User> res = dao.getAllUsers();
-//            for (int i = 0; i < res.size(); i++) {
-//                System.out.println("resulllllllt  " + res.get(i).getEmail() + "  " + res.get(i).getName());
-//            }
-//            //System.out.println("result is  "+res.getEmail() +"  "+ res.getName()+" "+res.getPassword()+" "+res.getScore() );
-//        } catch (SQLException ex) {
-//            System.out.println("eroooooooooooor insert");
-//            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-////        } catch (SQLException ex) {
-////            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-////        }
-//
-//    }
 }
