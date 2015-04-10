@@ -1,6 +1,5 @@
 package servlets;
 
-import Beans.User;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -10,37 +9,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import DBUtilty.*;
+import java.io.PrintWriter;
 
 @WebServlet(
         name = "LoginServlet",
         urlPatterns = {"/LoginServlet"}
 )
 public class LoginServlet extends HttpServlet {
-
+    
     private UserDAO userDAO = UserDAO.getInstance();
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-//        PrintWriter out = response.getWriter();
-
-        String userName = request.getParameter("name");
+        PrintWriter out = response.getWriter();
+        
+        String userMail = request.getParameter("mail");
         String password = request.getParameter("password");
-        //String image = request.getParameter("imageName");
-        //String score = request.getParameter("score");
-        //String email = request.getParameter("email");
-
+        
         try {
-
-            if (userDAO.validateUser(userName, password)) {
+            if (userDAO.validateUser(userMail, password)) {
                 HttpSession session = request.getSession(true);
-                User user = userDAO.getUserByEmail(userName,"");
+                out.println("yes");
+                //User user = userDAO.getUserByEmail(userMail, password);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
-        response.sendRedirect("Home.jsp");
+        //response.sendRedirect("Home.jsp");
     }
-
+    
 }
