@@ -1,5 +1,6 @@
 package servlets;
 
+import Beans.User;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import DBUtilty.*;
+import com.google.gson.Gson;
 import java.io.PrintWriter;
 
 @WebServlet(
@@ -21,16 +23,23 @@ public class LoginServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+        response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         
         String userMail = request.getParameter("mail");
         String password = request.getParameter("password");
         
         try {
-            if (userDAO.validateUser(userMail, password)) {
+            User u=userDAO.validateUser(userMail, password);
+            if (u!=null) {
                 HttpSession session = request.getSession(true);
-                out.println("yes");
+                  Gson gson = new Gson();
+//            Type type = new TypeToken<ArrayList<User>>() {
+//            }.getType();
+            
+            String result=gson.toJson(u.getName());
+            out.print(result);
+                //out.println("yes");
                 //User user = userDAO.getUserByEmail(userMail, password);
             }
         } catch (SQLException ex) {
@@ -40,4 +49,9 @@ public class LoginServlet extends HttpServlet {
         //response.sendRedirect("Home.jsp");
     }
     
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        System.out.println("kvjnfvkjfnrk");
+    }
 }

@@ -27,20 +27,26 @@ public class UserDAO {
     private UserDAO() {
     }
 
-    public boolean validateUser(String email, String password) throws SQLException {
+    public User validateUser(String email, String password) throws SQLException {
 
         email = email.toLowerCase();
 
-        String[] columns = {EMAIL};
+        String[] columns = {EMAIL , NAME,PASSWORD ,IMAGENAME ,SCORE };
 
         String condition = EMAIL + " = '" + email + "' AND " + PASSWORD + " = '" + password + "'";
 
         ResultSet resultSet = databaseUtilities.select(USER, columns, condition);
-
+       User user=null;
         if (resultSet.next()) {
-            return true;
+            user = new User();
+            user.setEmail(email);
+            user.setName(resultSet.getString(2));
+            user.setPassword(resultSet.getString(3));
+            user.setImageName(resultSet.getString(4));
+            user.setScore(resultSet.getInt(5));
+           
         }
-        return false;
+        return user;
     }
 
     public void addUser(User user) throws SQLException {
@@ -61,7 +67,7 @@ public class UserDAO {
 
     public void updateUser(User user) throws SQLException {
 
-        String[] columns = {EMAIL, NAME, PASSWORD, IMAGENAME, SCORE};
+        String[] columns = { NAME};
 
         String email = user.getEmail().toLowerCase();
         String password = user.getPassword();
@@ -69,7 +75,7 @@ public class UserDAO {
         String name = user.getName();
         String score = user.getScore() + "";
 
-        String[] values = {email, name, password, image, score};
+        String[] values = { name};
 
         String condition = EMAIL + " = '" + email + "'";
 

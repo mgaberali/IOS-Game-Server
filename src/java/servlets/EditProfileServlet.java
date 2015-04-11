@@ -6,7 +6,7 @@
 package servlets;
 
 import Beans.User;
-import DBUtilty.*;
+import DBUtilty.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,12 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author AYA
+ * @author Amal
  */
-@WebServlet(name = "SignupServlet", urlPatterns = {"/SignupServlet"})
-public class SignupServlet extends HttpServlet {
-
-    static final UserDAO user = UserDAO.getInstance();
+@WebServlet(name = "EditProfileServlet", urlPatterns = {"/EditProfileServlet"})
+public class EditProfileServlet extends HttpServlet {
+  static final UserDAO user = UserDAO.getInstance();
     User userObj = new User();
     PrintWriter out;
 
@@ -42,17 +41,17 @@ public class SignupServlet extends HttpServlet {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
-        String image = request.getParameter("userImage");
+        //String image = request.getParameter("imageName");
         //String score = request.getParameter("score");
-        System.out.println("xxxx:   "+image);
+
         userObj.setName(name);
         userObj.setPassword(password);
         userObj.setEmail(email);
-        userObj.setImageName(image);
+        // userObj.setImageName(image);
         //userObj.setScore(Integer.parseInt(score));
 
         try {
-            user.addUser(userObj);
+            user.updateUser(userObj);
            // out.write("yes");
             out.println("done done done");
         } catch (SQLException ex) {

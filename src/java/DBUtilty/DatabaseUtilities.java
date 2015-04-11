@@ -15,7 +15,7 @@ class DatabaseUtilities {
     private static final String CLASS_NAME = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/" + DB_NAME;
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "root";
+    private static final String DB_PASSWORD = "123456";
     
     // MySQL Database Connections
 //    private static final String DB_NAME = "Comfort";
