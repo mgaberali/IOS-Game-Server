@@ -8,6 +8,9 @@ package servlets;
 import Beans.User;
 import DBUtilty.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -17,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 
 /**
  *
@@ -37,12 +41,27 @@ public class SignupServlet extends HttpServlet {
         Gson gson = new Gson();
         HashMap<String, String> resp = new HashMap<>();
         String result = "";
+        StringBuilder jsonData = new StringBuilder();
 
+        // get json data
+       BufferedReader reader = request.getReader();
+       
+       String line = null;
+       while((line = reader.readLine()) != null){
+           jsonData.append(line);
+       }
+       
+        // create json parser
+        JsonParser parser = new JsonParser();
+       
+        // convert json string to json objects
+        JsonObject json =  (JsonObject) parser.parse(jsonData.toString());
+        
         // get request parameters
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
-        String email = request.getParameter("email");
-        String image = request.getParameter("userImage");
+        String name = json.get("name").getAsString();
+        String password = json.get("password").getAsString();
+        String email = json.get("email").getAsString();
+        String image = json.get("image").getAsString();
 
         // make user object with data
         userObj = new User();
