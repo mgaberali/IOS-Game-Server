@@ -7,9 +7,11 @@ package servlets;
 
 import Beans.User;
 import DBUtilty.*;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,27 +26,26 @@ import javax.servlet.http.HttpServletResponse;
 public class SignupServlet extends HttpServlet {
 
     static final UserDAO user = UserDAO.getInstance();
-    User userObj = new User();
+    User userObj;
     PrintWriter out;
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //ssuper.doGet(req, resp); //To change body of generated methods, choose Tools | Templates.
-        out = response.getWriter();
-        out.println("ddd");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("###############################################################");
+
         out = response.getWriter();
+        Gson gson = new Gson();
+        HashMap<String, String> resp = new HashMap<>();
+        String result = "";
+
+        // get request parameters
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         String image = request.getParameter("userImage");
-        //String score = request.getParameter("score");
-        System.out.println("xxxx:   "+image);
+
+        // make user object with data
+        userObj = new User();
         userObj.setName(name);
         userObj.setPassword(password);
         userObj.setEmail(email);
@@ -52,11 +53,25 @@ public class SignupServlet extends HttpServlet {
         //userObj.setScore(Integer.parseInt(score));
 
         try {
+
             user.addUser(userObj);
-           // out.write("yes");
-            out.println("done done done");
+
+            // prepare response data
+            resp.put("status", "success");
+
         } catch (SQLException ex) {
-            ex.printStackTrace();
+
+            // prepare response data
+            resp.put("status", "fail");
+
+        } finally {
+
+            // convert response data to json string
+            result = gson.toJson(resp);
+
+            // write json string on response
+            out.print(result);
+
         }
 
     }
