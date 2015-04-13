@@ -69,6 +69,7 @@ public class SignupServlet extends HttpServlet {
         userObj.setPassword(password);
         userObj.setEmail(email);
         userObj.setImageName(image);
+        
         //userObj.setScore(Integer.parseInt(score));
 
         try {
@@ -79,7 +80,7 @@ public class SignupServlet extends HttpServlet {
             resp.put("status", "success");
 
         } catch (SQLException ex) {
-
+            ex.printStackTrace();
             // prepare response data
             resp.put("status", "fail");
 
@@ -93,6 +94,8 @@ public class SignupServlet extends HttpServlet {
 
         }
 
+        System.err.println("request "+ json.toString());
+        System.err.println("response  "+ result.toString());
     }
 
 }

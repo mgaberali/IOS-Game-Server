@@ -67,7 +67,7 @@ public class UserDAO {
 
     public void updateUser(User user) throws SQLException {
 
-        String[] columns = { NAME};
+        String[] columns = { NAME , IMAGENAME, SCORE};
 
         String email = user.getEmail().toLowerCase();
         String password = user.getPassword();
@@ -75,7 +75,21 @@ public class UserDAO {
         String name = user.getName();
         String score = user.getScore() + "";
 
-        String[] values = { name};
+        String[] values = { name, image, score};
+
+        String condition = EMAIL + " = '" + email + "'";
+
+        databaseUtilities.update(USER, columns, values, condition);
+    }
+    
+        public void updateUserScore(User user) throws SQLException {
+
+        String[] columns = {SCORE};
+
+        String email = user.getEmail().toLowerCase();
+        String score = user.getScore() + "";
+
+        String[] values = { score};
 
         String condition = EMAIL + " = '" + email + "'";
 

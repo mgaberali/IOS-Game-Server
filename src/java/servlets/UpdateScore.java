@@ -23,12 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Amal
+ * @author Hala
  */
-@WebServlet(name = "EditProfileServlet", urlPatterns = {"/EditProfileServlet"})
-public class EditProfileServlet extends HttpServlet {
+@WebServlet(name = "UpdateScore", urlPatterns = {"/UpdateScore"})
+public class UpdateScore extends HttpServlet {
 
-    static final UserDAO user = UserDAO.getInstance();
+        static final UserDAO user = UserDAO.getInstance();
     User userObj;
     PrintWriter out;
 
@@ -58,29 +58,29 @@ public class EditProfileServlet extends HttpServlet {
         JsonObject json = (JsonObject) parser.parse(jsonData.toString());
 
         // get request parameters
-        String name = json.get("name").getAsString();
-        String password = json.get("password").getAsString();
+        //String name = json.get("name").getAsString();
+        //String password = json.get("password").getAsString();
         String email = json.get("email").getAsString();
-        String image = json.get("image").getAsString();
         int score = json.get("score").getAsInt();
-        
+        //String image = json.get("image").getAsString();
+
         // create user with data
         userObj = new User();
-        userObj.setName(name);
-        userObj.setPassword(password);
+        //userObj.setName(name);
+        //userObj.setPassword(password);
         userObj.setEmail(email);
-        userObj.setImageName(image);
         userObj.setScore(score);
+        //userObj.setScore(Integer.parseInt(score));
 
         try {
 
-            user.updateUser(userObj);
+            user.updateUserScore(userObj);
 
             // prepare response data
             resp.put("status", "success");
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+
             // prepare response data
             resp.put("status", "fail");
 
@@ -91,9 +91,9 @@ public class EditProfileServlet extends HttpServlet {
 
             // write json string on response
             out.print(result);
+
         }
-        System.err.println("request " + json.toString());
-        System.err.println("response  " + result.toString());
+
     }
 
 }
