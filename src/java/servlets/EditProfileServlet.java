@@ -8,6 +8,9 @@ package servlets;
 import Beans.User;
 import DBUtilty.UserDAO;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -24,26 +27,41 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "EditProfileServlet", urlPatterns = {"/EditProfileServlet"})
 public class EditProfileServlet extends HttpServlet {
-  static final UserDAO user = UserDAO.getInstance();
+
+    static final UserDAO user = UserDAO.getInstance();
     User userObj;
     PrintWriter out;
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         out = response.getWriter();
-         Gson gson = new Gson();
+        Gson gson = new Gson();
         HashMap<String, String> resp = new HashMap<>();
         String result = "";
-        
+
+        StringBuilder jsonData = new StringBuilder();
+
+        // get json data
+        BufferedReader reader = request.getReader();
+
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            jsonData.append(line);
+        }
+
+        // create json parser
+        JsonParser parser = new JsonParser();
+
+        // convert json string to json objects
+        JsonObject json = (JsonObject) parser.parse(jsonData.toString());
+
         // get request parameters
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
-        String email = request.getParameter("email");
-        String image = request.getParameter("imageName");
-        //String score = request.getParameter("score");
+        String name = json.get("name").getAsString();
+        String password = json.get("password").getAsString();
+        String email = json.get("email").getAsString();
+        String image = json.get("image").getAsString();
 
         // create user with data
         userObj = new User();
@@ -54,17 +72,17 @@ public class EditProfileServlet extends HttpServlet {
         //userObj.setScore(Integer.parseInt(score));
 
         try {
-            
+
             user.updateUser(userObj);
-             
+
             // prepare response data
             resp.put("status", "success");
-           
+
         } catch (SQLException ex) {
-           
-             // prepare response data
+
+            // prepare response data
             resp.put("status", "fail");
-            
+
         } finally {
 
             // convert response data to json string
