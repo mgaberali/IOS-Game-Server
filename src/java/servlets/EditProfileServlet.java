@@ -92,8 +92,7 @@ public class EditProfileServlet extends HttpServlet {
             // write json string on response
             out.print(result);
         }
-        System.err.println("request " + json.toString());
-        System.err.println("response  " + result.toString());
+       
     }
 
 }

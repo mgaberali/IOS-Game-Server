@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class UserDAO {
     
-    private static final String LIMIT = "10";
+    private static final String LIMIT = "5";
 
     private static final String USER = "user";
     private static final String NAME = "name";
@@ -57,8 +57,6 @@ public class UserDAO {
         String image = user.getImageName();
         String name = user.getName();
         String score = user.getScore() + "";
-
-        System.out.println("aaaaaaaaa" + email);
 
         String[] values = {email, name, password, image, score};
         databaseUtilities.insert(USER, columns, values);

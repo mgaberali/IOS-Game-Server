@@ -94,8 +94,6 @@ public class SignupServlet extends HttpServlet {
 
         }
 
-        System.err.println("request "+ json.toString());
-        System.err.println("response  "+ result.toString());
     }
 
 }

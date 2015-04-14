@@ -17,12 +17,6 @@ class DatabaseUtilities {
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "123456";
     
-    // MySQL Database Connections
-//    private static final String DB_NAME = "Comfort";
-//	private static final String CLASS_NAME = "com.mysql.jdbc.Driver";
-//	private static final String DB_URL = "jdbc:mysql://localhost/" + DB_NAME;
-//	private static final String DB_USER = "root";
-//	private static final String DB_PASSWORD = "root";
 	
     // Database Utilities Instance
     private static final DatabaseUtilities databaseUtilities = new DatabaseUtilities();
@@ -108,7 +102,6 @@ class DatabaseUtilities {
         
         ResultSet resultSet = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(query);
 
-        System.out.println(query);
         printResultSet(resultSet);
         
         resultSet.beforeFirst();
@@ -153,9 +146,7 @@ class DatabaseUtilities {
         Statement statement = connection.createStatement();
         int rows = statement.executeUpdate(query);
         statement.close();
-        
-        System.out.println(query);
-        System.out.println(rows + " row(s) inserted");
+      
     }
 
     // Update Record
@@ -191,9 +182,7 @@ class DatabaseUtilities {
         Statement statement = connection.createStatement();
         int rows = statement.executeUpdate(query);
         statement.close();
-        
-        System.out.println(query);
-        System.out.println(rows + " row(s) updated");
+     
     }
 
     // Delete Record
@@ -210,8 +199,6 @@ class DatabaseUtilities {
         int rows = statement.executeUpdate(query);
         statement.close();
         
-        System.out.println(query);
-        System.out.println(rows + " row(s) deleted");
     }
 
     // Print ResultSet
@@ -254,47 +241,25 @@ class DatabaseUtilities {
         for (int i = 0; i < columnsNumber; i++) {
         	maxLenghts[i] += 2;
         }
-    	
-        // Print Top Border
-        printBorder(maxLenghts);
-    	
-    	// Print Headers
-        printRow(headers, maxLenghts);
-        
-        // Print Middle Border
-        printBorder(maxLenghts);
-    	
-    	// Print Table
-    	for (String[] columns : table) {
-    		printRow(columns, maxLenghts);
-		}
-        
-    	// Print Bottom Border
-    	printBorder(maxLenghts);
     }
     
     // Print Row
     private void printRow(String[] row, int[] maxLenghts) {
         for (int i = 0; i < row.length; i++) {
-        	System.out.print("| ");
         	String value = row[i];
-            System.out.print(value);
             for (int j = 0; j < maxLenghts[i] - value.length() - 1; j++) {
-            	System.out.print(" ");
+            
             }
         }
-        System.out.println("|");
     }
     
     // Print Border
     private void printBorder(int[] maxLenghts) {
     	for (int i = 0; i < maxLenghts.length; i++) {
-    		System.out.print("+");
             for (int j = 0; j < maxLenghts[i]; j++) {
-            	System.out.print("-");
             }
     	}
-    	System.out.println("+");
+        
     }
 
     // Commit
